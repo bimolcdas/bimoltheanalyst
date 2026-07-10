@@ -150,6 +150,21 @@ ul{list-style:none}
   display: inline-flex;
   align-items: center;
   box-sizing: border-box;
+  opacity: 1;
+  transform: translateX(0);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease;
+}
+.exp-tag.slide-from-left {
+  transform: translateX(-40px);
+  opacity: 0;
+}
+.exp-tag.slide-from-right {
+  transform: translateX(40px);
+  opacity: 0;
+}
+.exp-tag.active {
+  transform: translateX(0);
+  opacity: 1;
 }
 /* ABOUT */
 .about{background:var(--bg-main)}
@@ -833,6 +848,50 @@ function handleContact(e){e.preventDefault();alert('Thanks for your message! I w
   }
   
   spawnKeyword();
+  
+  // Experience Tags Slide Loop
+  (function() {
+    const tags = document.querySelectorAll('.exp-tag');
+    if (!tags.length) return;
+    
+    let slideFromLeft = true;
+    
+    function runCycle() {
+      tags.forEach(tag => {
+        tag.classList.remove('active');
+        if (slideFromLeft) {
+          tag.classList.add('slide-from-left');
+          tag.classList.remove('slide-from-right');
+        } else {
+          tag.classList.add('slide-from-right');
+          tag.classList.remove('slide-from-left');
+        }
+      });
+      
+      // Force repaint
+      void tags[0].offsetWidth;
+      
+      // Slide in sequentially
+      tags.forEach((tag, idx) => {
+        setTimeout(() => {
+          tag.classList.add('active');
+        }, idx * 250);
+      });
+      
+      // Hold then disappear
+      setTimeout(() => {
+        tags.forEach(tag => tag.classList.remove('active'));
+      }, 2800);
+      
+      // Toggle direction and trigger next cycle
+      setTimeout(() => {
+        slideFromLeft = !slideFromLeft;
+        runCycle();
+      }, 3800);
+    }
+    
+    runCycle();
+  })();
 })();
 </script>
 </body>

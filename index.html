@@ -187,6 +187,104 @@ ul{list-style:none}
 .svc-inc li{font-size:13px;line-height:20px;color:var(--text-2);padding-left:18px;position:relative}
 .svc-inc li:before{content:'\2713';position:absolute;left:0;color:var(--green);font-weight:800}
 .card-link{display:inline-block;margin-top:16px;font-size:14px;font-weight:800;color:var(--green)}
+.services-section {
+  padding: 96px 0;
+  background: #111820;
+}
+.services-sec-title {
+  font-weight: 850;
+}
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 24px;
+  margin-top: 52px;
+}
+.services-grid .card {
+  min-height: 340px;
+  padding: 28px;
+  border-radius: 18px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  box-sizing: border-box;
+  grid-column: span 2;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.services-grid .card:nth-child(4) {
+  grid-column: 2 / span 2;
+}
+.services-grid .card:nth-child(5) {
+  grid-column: 4 / span 2;
+}
+.services-grid .card:hover {
+  transform: translateY(-4px);
+  border-color: var(--green);
+  box-shadow: 0 12px 30px rgba(0, 212, 126, 0.15);
+}
+.services-grid .svc-inc li {
+  font-size: 13px;
+  line-height: 22px;
+}
+.services-grid .card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: auto;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--green);
+  transition: color 0.25s ease;
+  width: fit-content;
+  text-decoration: none;
+}
+.services-grid .card-link .arrow {
+  transition: transform 0.25s ease;
+  display: inline-block;
+}
+.services-grid .card:hover .card-link .arrow {
+  transform: translateX(4px);
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .services-section {
+    padding: 72px 0;
+  }
+  .services-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  .services-grid .card {
+    grid-column: span 1 !important;
+    min-height: 320px;
+  }
+  .services-grid .card:nth-child(5) {
+    grid-column: span 2 !important;
+  }
+}
+@media (max-width: 767px) {
+  .services-section {
+    padding: 64px 0;
+  }
+  .services-sec-title {
+    font-size: 32px;
+    line-height: 40px;
+  }
+  .services-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .services-grid .card {
+    grid-column: span 1 !important;
+    max-width: 350px;
+    margin: 0 auto;
+    width: 100%;
+    min-height: 300px;
+    padding: 24px;
+    border-radius: 16px;
+  }
+}
 /* PROCESS */
 .process{background:var(--bg-section)}
 .step-num{font-size:14px;font-weight:800;color:var(--green)}
@@ -518,44 +616,83 @@ ul{list-style:none}
   </div>
 </section>
 <!-- SERVICES -->
-<section class="section" id="services">
+<!-- SERVICES -->
+<section class="section services-section" id="services">
   <div class="container">
     <div class="sec-head">
-      <h2 class="sec-title">What I <span class="green">Offer</span></h2>
-      <p class="sec-desc">Focused analytics and BI services designed to improve reporting, reduce manual work, and support better business decisions.</p>
+      <h2 class="sec-title services-sec-title">What I <span class="green">Offer</span></h2>
+      <p class="sec-desc">Practical AI, automation, analytics, and BI services designed to reduce manual work, improve reporting, and support better business decisions.</p>
     </div>
-    <div class="grid-4">
+    <div class="services-grid">
+      <!-- Service 1 -->
       <div class="card">
-        <div class="icon-box">BI</div>
-        <div class="svc-title">BI Dashboard Build</div>
-        <div class="svc-best">Best for: Teams that need clear KPI reporting</div>
-        <p class="svc-desc">I design Power BI, Tableau, or Looker Studio dashboards that turn raw data into clean, executive-ready reporting.</p>
-        <ul class="svc-inc"><li>KPI design</li><li>Dashboard layout</li><li>Filters and drilldowns</li><li>Business-friendly visuals</li></ul>
-        <a href="#contact" class="card-link">Learn More &rarr;</a>
+        <div class="icon-box">AI</div>
+        <h3 class="svc-title">AI Agent & Workflow Automation</h3>
+        <div class="svc-best">Best for: Teams that want to automate repetitive work with practical AI</div>
+        <p class="svc-desc">I design AI-powered agents and intelligent workflows that connect business data, documents, and tools to automate routine tasks and improve access to information.</p>
+        <ul class="svc-inc">
+          <li>AI workflow assessment</li>
+          <li>Custom AI agent design</li>
+          <li>Knowledge and data integration</li>
+          <li>Testing and documentation</li>
+        </ul>
+        <a href="#contact" class="card-link">Learn More <span class="arrow">&rarr;</span></a>
       </div>
-      <div class="card">
-        <div class="icon-box">DA</div>
-        <div class="svc-title">Data Audit Sprint</div>
-        <div class="svc-best">Best for: Businesses with messy or unreliable reports</div>
-        <p class="svc-desc">I review your datasets, dashboards, and reporting process to find gaps, errors, and opportunities for improvement.</p>
-        <ul class="svc-inc"><li>Data quality review</li><li>Report logic check</li><li>Issue summary</li><li>Improvement roadmap</li></ul>
-        <a href="#contact" class="card-link">Learn More &rarr;</a>
-      </div>
+      <!-- Service 2 -->
       <div class="card">
         <div class="icon-box">RA</div>
-        <div class="svc-title">Reporting Automation</div>
-        <div class="svc-best">Best for: Teams doing too much manual reporting</div>
-        <p class="svc-desc">I help automate recurring reports, ETL workflows, and data preparation steps so your team can save time and reduce errors.</p>
-        <ul class="svc-inc"><li>ETL workflow setup</li><li>Automated reporting</li><li>Excel and SQL cleanup</li><li>Process documentation</li></ul>
-        <a href="#contact" class="card-link">Learn More &rarr;</a>
+        <h3 class="svc-title">Reporting Automation</h3>
+        <div class="svc-best">Best for: Teams spending too much time on manual reporting</div>
+        <p class="svc-desc">I automate recurring reports, ETL workflows, and data preparation processes to reduce manual work, improve consistency, and minimize reporting errors.</p>
+        <ul class="svc-inc">
+          <li>ETL workflow setup</li>
+          <li>Automated reporting</li>
+          <li>Excel and SQL cleanup</li>
+          <li>Process documentation</li>
+        </ul>
+        <a href="#contact" class="card-link">Learn More <span class="arrow">&rarr;</span></a>
       </div>
+      <!-- Service 3 -->
+      <div class="card">
+        <div class="icon-box">DA</div>
+        <h3 class="svc-title">Data Audit Sprint</h3>
+        <div class="svc-best">Best for: Businesses with inconsistent data or unreliable reports</div>
+        <p class="svc-desc">I review datasets, dashboards, and reporting processes to identify data-quality issues, logic gaps, errors, and opportunities for improvement.</p>
+        <ul class="svc-inc">
+          <li>Data-quality review</li>
+          <li>Report logic validation</li>
+          <li>Issue and gap summary</li>
+          <li>Improvement roadmap</li>
+        </ul>
+        <a href="#contact" class="card-link">Learn More <span class="arrow">&rarr;</span></a>
+      </div>
+      <!-- Service 4 -->
+      <div class="card">
+        <div class="icon-box">BI</div>
+        <h3 class="svc-title">BI Dashboard Build</h3>
+        <div class="svc-best">Best for: Teams that need clear and reliable KPI reporting</div>
+        <p class="svc-desc">I design Power BI, Tableau, and Looker Studio dashboards that transform complex data into clear, interactive, and decision-focused reporting.</p>
+        <ul class="svc-inc">
+          <li>KPI and metric design</li>
+          <li>Interactive dashboard layout</li>
+          <li>Filters and drilldowns</li>
+          <li>Business-focused visuals</li>
+        </ul>
+        <a href="#contact" class="card-link">Learn More <span class="arrow">&rarr;</span></a>
+      </div>
+      <!-- Service 5 -->
       <div class="card">
         <div class="icon-box">AM</div>
-        <div class="svc-title">Analytics Mentorship</div>
-        <div class="svc-best">Best for: Students and early-career analysts</div>
-        <p class="svc-desc">I provide practical guidance on SQL, Power BI, analytics portfolios, dashboards, and career-ready project presentation.</p>
-        <ul class="svc-inc"><li>Portfolio review</li><li>SQL and BI guidance</li><li>Project feedback</li><li>Career-focused coaching</li></ul>
-        <a href="#contact" class="card-link">Learn More &rarr;</a>
+        <h3 class="svc-title">Analytics Mentorship</h3>
+        <div class="svc-best">Best for: Students and early-career analytics professionals</div>
+        <p class="svc-desc">I provide practical guidance on SQL, Power BI, analytics portfolios, dashboards, and presenting technical projects with clear business impact.</p>
+        <ul class="svc-inc">
+          <li>Analytics portfolio review</li>
+          <li>SQL and BI guidance</li>
+          <li>Project and dashboard feedback</li>
+          <li>Career-focused coaching</li>
+        </ul>
+        <a href="#contact" class="card-link">Learn More <span class="arrow">&rarr;</span></a>
       </div>
     </div>
   </div>

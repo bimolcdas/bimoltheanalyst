@@ -89,6 +89,8 @@ ul{list-style:none}
 .eyebrow{margin:22px 0 14px;font-size:13px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--green)}
 .hero-title{font-size:clamp(32px,4.4vw,54px);line-height:1.08;font-weight:800;letter-spacing:-.02em;color:var(--text)}
 .hero-title .green{color:var(--green)}
+.desktop-br{display:block}
+@media(max-width:900px){.desktop-br{display:none}}
 .cert-badges{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 20px}
 .cert{font-size:12px;font-weight:700;letter-spacing:.05em;color:var(--text);background:rgba(0,212,126,.10);border:1px solid rgba(0,212,126,.30);padding:7px 14px;border-radius:8px}
 .hero-desc{font-size:16px;line-height:1.7;color:var(--text-2);max-width:540px}
@@ -432,16 +434,16 @@ ul{list-style:none}
     <div class="hero-copy">
       <span class="avail-badge"><span class="avail-dot"></span>Available for select freelance projects</span>
       <p class="eyebrow">DATA ANALYTICS &amp; BI CONSULTANT</p>
-      <h1 class="hero-title">I help businesses turn <span class="green">messy data</span> into clear decisions</h1>
-      <p class="hero-desc">5+ years building dashboards, automations, and AI-driven analytics for companies across the US, Bangladesh, and Nepal. Now taking on select freelance and consulting projects alongside my full-time work.</p>
-      <div class="hero-cta">
-        <a href="#contact" class="btn btn-primary">Work With Me</a>
-        <a href="#contact" class="btn btn-secondary">Download Resume</a>
-      </div>
+      <h1 class="hero-title">I help businesses turn<br class="desktop-br"> <span class="green">messy data</span> into<br class="desktop-br"> clear decisions</h1>
       <div class="cert-badges">
         <span class="cert">CBAP</span>
         <span class="cert">PMP</span>
         <span class="cert">PL-300</span>
+      </div>
+      <p class="hero-desc">5+ years building dashboards, automations, and AI-driven analytics for companies across the US, Bangladesh, and Nepal. Now taking on select freelance and consulting projects alongside my full-time work.</p>
+      <div class="hero-cta">
+        <a href="#contact" class="btn btn-primary">Work With Me</a>
+        <a href="#contact" class="btn btn-secondary">Download Resume</a>
       </div>
     </div>
     <div class="hero-visual">

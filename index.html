@@ -769,9 +769,11 @@ function handleContact(e){e.preventDefault();alert('Thanks for your message! I w
     // Choose random percentage positions
     let x, y;
     if (window.innerWidth > 900) {
-      // Desktop: Restrict strictly to the right side (where there is no text content overlay)
-      x = 55 + Math.random() * 30; // 55% to 85%
-      y = 15 + Math.random() * 65; // 15% to 80%
+      // Desktop: Restrict to two empty visual bands to avoid being hidden behind the portrait:
+      // Band A (between text and portrait): 45% to 54%
+      // Band B (right of portrait): 80% to 92%
+      x = Math.random() < 0.5 ? (45 + Math.random() * 9) : (80 + Math.random() * 12);
+      y = 15 + Math.random() * 60; // 15% to 75%
     } else {
       // Mobile: Restrict to the bottom area around the hero visual
       x = 10 + Math.random() * 70; // 10% to 80%

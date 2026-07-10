@@ -767,8 +767,16 @@ function handleContact(e){e.preventDefault();alert('Thanks for your message! I w
     span.textContent = word;
     
     // Choose random percentage positions
-    const x = 5 + Math.random() * 65; 
-    const y = 15 + Math.random() * 65; 
+    let x, y;
+    if (window.innerWidth > 900) {
+      // Desktop: Restrict strictly to the right side (where there is no text content overlay)
+      x = 55 + Math.random() * 30; // 55% to 85%
+      y = 15 + Math.random() * 65; // 15% to 80%
+    } else {
+      // Mobile: Restrict to the bottom area around the hero visual
+      x = 10 + Math.random() * 70; // 10% to 80%
+      y = 55 + Math.random() * 35; // 55% to 90%
+    }
     
     span.style.left = `${x}%`;
     span.style.top = `${y}%`;

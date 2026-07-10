@@ -59,15 +59,28 @@ ul{list-style:none}
 .hero-bg{position:absolute;inset:0;z-index:0;pointer-events:none}
 #hero-net{position:absolute;inset:0;width:100%;height:100%;opacity:.55}
 .hero-keywords{position:absolute;inset:0;z-index:1;pointer-events:none}
-.hero-keyword{position:absolute;font-weight:500;letter-spacing:.05em;white-space:nowrap;color:rgba(255,255,255,.13);text-shadow:0 0 20px rgba(255,255,255,.10);animation:kwFloat 12s ease-in-out infinite;animation-delay:calc(var(--i) * 1s)}
-.kw1{top:9%;right:6%;font-size:18px;color:rgba(255,255,255,.15)}
-.kw2{top:21%;right:16%;font-size:14px;color:rgba(255,255,255,.11)}
-.kw3{top:33%;right:5%;font-size:15px;color:rgba(255,255,255,.12)}
-.kw4{top:45%;right:20%;font-size:14px;color:rgba(255,255,255,.11)}
-.kw5{bottom:33%;right:8%;font-size:16px;color:rgba(255,255,255,.13)}
-.kw6{bottom:20%;right:18%;font-size:14px;color:rgba(255,255,255,.11)}
-.kw7{bottom:8%;right:7%;font-size:15px;color:rgba(255,255,255,.12)}
-@keyframes kwFloat{0%,100%{transform:translateY(0);opacity:.5}50%{transform:translateY(-10px);opacity:.95}}
+.hero-keyword-dynamic {
+  position: absolute;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  color: #26C980;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 1.5s ease, transform 4.5s ease-out;
+  text-shadow: 0 0 15px rgba(38, 201, 128, 0.4);
+  font-size: 16px;
+  pointer-events: none;
+}
+.hero-keyword-dynamic.visible {
+  opacity: 0.65;
+  transform: translateY(-10px);
+}
+@media (max-width: 767px) {
+  .hero-keyword-dynamic {
+    font-size: 13px;
+  }
+}
 .hero-shell{position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:clamp(120px, 14vh, 150px) 32px clamp(60px, 8vh, 96px);display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
 .hero-copy{max-width:600px}
 .avail-badge{display:inline-flex;align-items:center;gap:9px;font-size:13px;font-weight:600;color:var(--text-2);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);padding:8px 16px;border-radius:999px}
@@ -90,22 +103,10 @@ ul{list-style:none}
   .hero-shell{grid-template-columns:1fr;gap:40px;padding:130px 22px 72px}
   .hero-copy{max-width:none;order:1}
   .hero-visual{order:2}
-  .kw2,.kw3,.kw6{display:none}
-  .kw1{font-size:16px;right:5%}
-  .kw4{font-size:16px;right:6%}
-  .kw5{right:3%}
-  .kw7{right:8%}
 }
 @media (max-width:560px){
   .nav-shell{padding-left:18px}
   .hero-cta .btn{flex:1 1 auto;justify-content:center}
-  .kw5,.kw7{display:none}
-  .kw1{top:8%;right:5%}
-  .kw4{bottom:14%;right:6%}
-}
-@media (prefers-reduced-motion:reduce){
-  .avail-dot,.hero-keyword{animation:none}
-  .hero-keyword{opacity:.6}
 }
 /* STATS */
 .stats{background:var(--bg-section);padding:56px 0}
@@ -430,15 +431,7 @@ ul{list-style:none}
 <section class="hero" id="home">
   <div class="hero-bg">
     <canvas id="hero-net"></canvas>
-    <div class="hero-keywords">
-      <span class="hero-keyword kw1" style="--i:0">Artificial Intelligence</span>
-      <span class="hero-keyword kw2" style="--i:1">Machine Learning</span>
-      <span class="hero-keyword kw3" style="--i:2">Data Analysis</span>
-      <span class="hero-keyword kw4" style="--i:3">Big Data</span>
-      <span class="hero-keyword kw5" style="--i:4">Statistics</span>
-      <span class="hero-keyword kw6" style="--i:5">Clustering</span>
-      <span class="hero-keyword kw7" style="--i:6">Algorithms</span>
-    </div>
+    <div class="hero-keywords"></div>
   </div>
   <div class="hero-shell">
     <div class="hero-copy">
@@ -740,6 +733,62 @@ function handleContact(e){e.preventDefault();alert('Thanks for your message! I w
   size();
   if(!reduce){draw();}else{links();}
   var to;window.addEventListener('resize',function(){clearTimeout(to);to=setTimeout(function(){if(raf)cancelAnimationFrame(raf);size();if(!reduce)draw();else{ctx.clearRect(0,0,w,h);links();}},200);});
+})();
+</script>
+
+<script>
+(function() {
+  const keywords = [
+    "Artificial Intelligence",
+    "Machine Learning",
+    "Data Analysis",
+    "Big Data",
+    "Statistics",
+    "Clustering",
+    "Algorithms"
+  ];
+  
+  const container = document.querySelector('.hero-keywords');
+  if (!container) return;
+  
+  container.innerHTML = '';
+  let currentIndex = -1;
+  
+  function spawnKeyword() {
+    let nextIndex;
+    do {
+      nextIndex = Math.floor(Math.random() * keywords.length);
+    } while (nextIndex === currentIndex && keywords.length > 1);
+    currentIndex = nextIndex;
+    
+    const word = keywords[currentIndex];
+    const span = document.createElement('span');
+    span.className = 'hero-keyword-dynamic';
+    span.textContent = word;
+    
+    // Choose random percentage positions
+    const x = 5 + Math.random() * 65; 
+    const y = 15 + Math.random() * 65; 
+    
+    span.style.left = `${x}%`;
+    span.style.top = `${y}%`;
+    
+    container.appendChild(span);
+    
+    setTimeout(() => {
+      span.classList.add('visible');
+    }, 50);
+    
+    setTimeout(() => {
+      span.classList.remove('visible');
+      setTimeout(() => {
+        span.remove();
+        setTimeout(spawnKeyword, 800);
+      }, 1500);
+    }, 3500);
+  }
+  
+  spawnKeyword();
 })();
 </script>
 </body>

@@ -110,13 +110,44 @@ ul{list-style:none}
   .nav-shell{padding-left:18px}
   .hero-cta .btn{flex:1 1 auto;justify-content:center}
 }
-/* STATS */
-.stats{background:var(--bg-section);padding:10px 0}
-.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
-.stat{text-align:center;padding:0 16px;border-right:1px solid var(--border)}
-.stat:last-child{border-right:none}
-.stat-num{font-size:36px;line-height:42px;font-weight:200;color:var(--green)}
-.stat-label{margin-top:10px;font-size:13px;line-height:20px;font-weight:600;color:var(--text-2)}
+/* EXPERIENCE STRIP */
+.exp-strip {
+  margin-top: 44px;
+  text-align: center;
+}
+.exp-label {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.1px;
+  color: #6F7D8C;
+  text-transform: uppercase;
+}
+.desktop-label {
+  display: inline;
+}
+.mobile-label {
+  display: none;
+}
+.exp-tags {
+  margin-top: 18px;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.exp-tag {
+  height: 36px;
+  padding: 9px 18px;
+  border-radius: 999px;
+  background: #1B2430;
+  border: 1px solid #2A3442;
+  font-size: 13px;
+  font-weight: 700;
+  color: #9AA7B5;
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+}
 /* ABOUT */
 .about{background:var(--bg-main)}
 .about-grid{display:grid;grid-template-columns:1fr 1.3fr;gap:48px;align-items:start}
@@ -350,9 +381,10 @@ ul{list-style:none}
 .hero-cta{flex-direction:column}
 .hero-cta .btn{width:100%}
 .hero-card{margin:0 auto;height:300px}
-.stats-row{grid-template-columns:repeat(2,1fr);gap:16px}
-.stat{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px 12px;height:116px;display:flex;flex-direction:column;justify-content:center;border-right:1px solid var(--border)}
-.stat-num{font-size:30px;line-height:36px}
+.desktop-label{display:none}
+.mobile-label{display:inline}
+.exp-strip{margin-top:36px}
+.exp-tag{height:34px;font-size:12px;padding:8px 14px}
 .about-grid{grid-template-columns:1fr;gap:24px}
 .grid-4,.grid-3,.grid-2,.grid-5{grid-template-columns:1fr;gap:18px}
 .sec-title,.about h2,.contact h2{font-size:32px;line-height:40px}
@@ -452,14 +484,18 @@ ul{list-style:none}
     </div>
   </div>
 </section>
-<!-- STATS -->
-<section class="stats">
+<!-- EXPERIENCE STRIP -->
+<section class="exp-strip">
   <div class="container">
-    <div class="stats-row">
-      <div class="stat"><div class="stat-num">5+</div><div class="stat-label">Years in Data Analytics</div></div>
-      <div class="stat"><div class="stat-num">40%</div><div class="stat-label">Reduction in data preparation time</div></div>
-      <div class="stat"><div class="stat-num">81%</div><div class="stat-label">Demand signal uncovered for market expansion</div></div>
-      <div class="stat"><div class="stat-num">33%</div><div class="stat-label">Reduction in service quality complaints</div></div>
+    <p class="exp-label">
+      <span class="desktop-label">EXPERIENCE ACROSS DATA, OPERATIONS, LOGISTICS, AND CUSTOMER ANALYTICS</span>
+      <span class="mobile-label">EXPERIENCE ACROSS TEAMS</span>
+    </p>
+    <div class="exp-tags">
+      <span class="exp-tag">SMH Logistics</span>
+      <span class="exp-tag">Shoe Haven Inc.</span>
+      <span class="exp-tag">Pathao</span>
+      <span class="exp-tag">Grameenphone</span>
     </div>
   </div>
 </section>

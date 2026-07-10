@@ -703,36 +703,255 @@ function handleContact(e){e.preventDefault();alert('Thanks for your message! I w
 
 <script>
 (function(){
-  var canvas=document.getElementById('hero-net');
-  if(!canvas)return;
-  var ctx=canvas.getContext('2d');
-  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var pts=[],raf,w,h,dpr;
-  function size(){
-    var r=canvas.parentElement.getBoundingClientRect();
-    dpr=Math.min(window.devicePixelRatio||1,2);
-    w=r.width;h=r.height;
-    canvas.width=w*dpr;canvas.height=h*dpr;
-    canvas.style.width=w+'px';canvas.style.height=h+'px';
-    ctx.setTransform(dpr,0,0,dpr,0,0);
-    var count=Math.min(70,Math.round(w*h/16000));
-    pts=[];
-    for(var i=0;i<count;i++){pts.push({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.35,vy:(Math.random()-.5)*.35});}
+  var canvas = document.getElementById('hero-net');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var pts = [], binaryPts = [], raf, w, h, dpr;
+  var fov = 400; // Field of view depth
+  var maxDepth = 600;
+  
+  // Interactive mouse
+  var mouse = { x: null, y: null, z: 0, active: false };
+  window.addEventListener('mousemove', function(e) {
+    var r = canvas.getBoundingClientRect();
+    if (e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom) {
+      mouse.x = e.clientX - r.left;
+      mouse.y = e.clientY - r.top;
+      mouse.active = true;
+    } else {
+      mouse.active = false;
+    }
+  });
+  window.addEventListener('mouseleave', function() {
+    mouse.active = false;
+  });
+
+  function size() {
+    var r = canvas.parentElement.getBoundingClientRect();
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    w = r.width; h = r.height;
+    canvas.width = w * dpr; canvas.height = h * dpr;
+    canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    
+    // Plexus Points
+    var count = Math.min(65, Math.round(w * h / 18000));
+    pts = [];
+    for (var i = 0; i < count; i++) {
+      pts.push({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        z: Math.random() * maxDepth,
+        vx: (Math.random() - 0.5) * 0.4,
+        vy: (Math.random() - 0.5) * 0.4,
+        vz: (Math.random() - 0.5) * 0.4,
+        pulseOffset: Math.random()
+      });
+    }
+
+    // Floating Binary Points
+    var binaryCount = Math.min(25, Math.round(w * h / 30000));
+    binaryPts = [];
+    for (var j = 0; j < binaryCount; j++) {
+      binaryPts.push({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        z: Math.random() * maxDepth,
+        vx: (Math.random() - 0.5) * 0.25,
+        vy: (Math.random() - 0.5) * 0.25,
+        vz: (Math.random() - 0.5) * 0.2,
+        val: Math.random() > 0.5 ? '1' : '0',
+        changeTime: Math.random() * 100
+      });
+    }
   }
-  function links(){
-    for(var i=0;i<pts.length;i++){for(var j=i+1;j<pts.length;j++){var dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<130){ctx.strokeStyle='rgba(0,212,126,'+(0.12*(1-d/130))+')';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);ctx.stroke();}}}
-    ctx.fillStyle='rgba(0,212,126,.55)';
-    for(var k=0;k<pts.length;k++){ctx.beginPath();ctx.arc(pts[k].x,pts[k].y,1.6,0,Math.PI*2);ctx.fill();}
+
+  function drawFrame() {
+    ctx.clearRect(0, 0, w, h);
+    var cx = w / 2, cy = h / 2;
+    
+    // Apply very slow rotation to simulate 3D camera pan/orbit
+    var cosY = Math.cos(0.0004), sinY = Math.sin(0.0004);
+    var cosX = Math.cos(0.0002), sinX = Math.sin(0.0002);
+    
+    // Update and project Plexus Points
+    for (var i = 0; i < pts.length; i++) {
+      var p = pts[i];
+      
+      // Velocity movement
+      p.x += p.vx;
+      p.y += p.vy;
+      p.z += p.vz;
+      
+      // Auto-rotation around Y-axis (centered on fov center)
+      var rx = p.x - cx;
+      var rz = p.z - maxDepth / 2;
+      p.x = cx + (rx * cosY - rz * sinY);
+      p.z = maxDepth / 2 + (rx * sinY + rz * cosY);
+      
+      // Auto-rotation around X-axis
+      var ry = p.y - cy;
+      rz = p.z - maxDepth / 2;
+      p.y = cy + (ry * cosX - rz * sinX);
+      p.z = maxDepth / 2 + (ry * sinX + rz * cosX);
+
+      // Boundaries collision with wrap-around / bounce
+      if (p.x < -100 || p.x > w + 100) p.vx *= -1;
+      if (p.y < -100 || p.y > h + 100) p.vy *= -1;
+      if (p.z < 0 || p.z > maxDepth) p.vz *= -1;
+
+      // Mouse attraction in 3D
+      if (mouse.active) {
+        var dx = mouse.x - p.x;
+        var dy = mouse.y - p.y;
+        var dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 150) {
+          p.x += dx * 0.003;
+          p.y += dy * 0.003;
+        }
+      }
+
+      // 3D projection mapping
+      var scale = fov / (fov + p.z);
+      p.projX = cx + (p.x - cx) * scale;
+      p.projY = cy + (p.y - cy) * scale;
+      p.projSize = Math.max(0.5, 3 * scale);
+      p.projAlpha = 1 - (p.z / maxDepth);
+    }
+
+    // Update and project Binary Points
+    for (var j = 0; j < binaryPts.length; j++) {
+      var bp = binaryPts[j];
+      bp.x += bp.vx;
+      bp.y += bp.vy;
+      bp.z += bp.vz;
+      
+      // Slow rotation
+      var brx = bp.x - cx;
+      var brz = bp.z - maxDepth / 2;
+      bp.x = cx + (brx * cosY - brz * sinY);
+      bp.z = maxDepth / 2 + (brx * sinY + brz * cosY);
+      
+      if (bp.x < -50 || bp.x > w + 50) bp.vx *= -1;
+      if (bp.y < -50 || bp.y > h + 50) bp.vy *= -1;
+      if (bp.z < 0 || bp.z > maxDepth) bp.vz *= -1;
+
+      // Periodically switch 0/1
+      bp.changeTime++;
+      if (bp.changeTime > 200) {
+        bp.val = bp.val === '1' ? '0' : '1';
+        bp.changeTime = 0;
+      }
+
+      var bScale = fov / (fov + bp.z);
+      bp.projX = cx + (bp.x - cx) * bScale;
+      bp.projY = cy + (bp.y - cy) * bScale;
+      bp.projAlpha = (1 - (bp.z / maxDepth)) * 0.35; // Faint, background feel
+      bp.projSize = Math.round(Math.max(9, 15 * bScale));
+    }
+
+    // Draw Binary Numbers
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    for (var j = 0; j < binaryPts.length; j++) {
+      var bp = binaryPts[j];
+      if (bp.projAlpha <= 0) continue;
+      ctx.fillStyle = 'rgba(38, 201, 128, ' + bp.projAlpha + ')';
+      ctx.font = 'bold ' + bp.projSize + 'px Outfit, sans-serif';
+      ctx.fillText(bp.val, bp.projX, bp.projY);
+    }
+
+    // Draw lines and pulses
+    for (var i = 0; i < pts.length; i++) {
+      var pi = pts[i];
+      for (var k = i + 1; k < pts.length; k++) {
+        var pk = pts[k];
+        
+        // Calculate distance in 3D
+        var dx = pi.x - pk.x;
+        var dy = pi.y - pk.y;
+        var dz = pi.z - pk.z;
+        var dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
+        
+        if (dist < 180) {
+          var lineAlpha = (1 - dist / 180) * 0.15 * Math.min(pi.projAlpha, pk.projAlpha);
+          ctx.strokeStyle = 'rgba(0, 212, 126, ' + lineAlpha + ')';
+          ctx.lineWidth = 0.8;
+          ctx.beginPath();
+          ctx.moveTo(pi.projX, pi.projY);
+          ctx.lineTo(pk.projX, pk.projY);
+          ctx.stroke();
+
+          // Draw a small moving light pulse (data packet) along the active line
+          pi.pulseOffset += 0.0001;
+          if (pi.pulseOffset > 1) pi.pulseOffset -= 1;
+          
+          var pulseAlpha = lineAlpha * 4.0;
+          if (pulseAlpha > 0.02) {
+            var px = pi.projX + (pk.projX - pi.projX) * pi.pulseOffset;
+            var py = pi.projY + (pk.projY - pi.projY) * pi.pulseOffset;
+            var pulseRad = Math.max(1, 2.2 * Math.min(pi.projSize, pk.projSize));
+            
+            ctx.fillStyle = 'rgba(255, 255, 255, ' + pulseAlpha + ')';
+            ctx.beginPath();
+            ctx.arc(px, py, pulseRad, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.fillStyle = 'rgba(38, 201, 128, ' + (pulseAlpha * 0.5) + ')';
+            ctx.beginPath();
+            ctx.arc(px, py, pulseRad * 2.5, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        }
+      }
+    }
+
+    // Draw main plexus nodes (dots)
+    for (var i = 0; i < pts.length; i++) {
+      var p = pts[i];
+      if (p.projAlpha <= 0) continue;
+      
+      // Node body
+      ctx.fillStyle = 'rgba(0, 212, 126, ' + (p.projAlpha * 0.75) + ')';
+      ctx.beginPath();
+      ctx.arc(p.projX, p.projY, p.projSize, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Node inner core (glowing white center)
+      ctx.fillStyle = 'rgba(255, 255, 255, ' + p.projAlpha + ')';
+      ctx.beginPath();
+      ctx.arc(p.projX, p.projY, p.projSize * 0.45, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Soft glow ring
+      ctx.strokeStyle = 'rgba(38, 201, 128, ' + (p.projAlpha * 0.35) + ')';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.arc(p.projX, p.projY, p.projSize * 2.2, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+
+    raf = requestAnimationFrame(drawFrame);
   }
-  function draw(){
-    ctx.clearRect(0,0,w,h);
-    for(var i=0;i<pts.length;i++){var p=pts[i];p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>w)p.vx*=-1;if(p.y<0||p.y>h)p.vy*=-1;}
-    links();
-    raf=requestAnimationFrame(draw);
-  }
+
   size();
-  if(!reduce){draw();}else{links();}
-  var to;window.addEventListener('resize',function(){clearTimeout(to);to=setTimeout(function(){if(raf)cancelAnimationFrame(raf);size();if(!reduce)draw();else{ctx.clearRect(0,0,w,h);links();}},200);});
+  if (!reduce) {
+    drawFrame();
+  } else {
+    drawFrame();
+    cancelAnimationFrame(raf);
+  }
+
+  var to;
+  window.addEventListener('resize', function() {
+    clearTimeout(to);
+    to = setTimeout(function() {
+      if (raf) cancelAnimationFrame(raf);
+      size();
+      if (!reduce) drawFrame();
+    }, 200);
+  });
 })();
 </script>
 

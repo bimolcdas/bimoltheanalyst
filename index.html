@@ -256,7 +256,7 @@ ul{list-style:none}
 }
 .services-slider-controls {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   gap: 16px;
   margin-top: 36px;
 }
@@ -1086,7 +1086,7 @@ function handleContact(e){e.preventDefault();alert('Thanks for your message! I w
     const nextBtn = document.querySelector('.next-btn');
     if (!grid || !cards.length || !prevBtn || !nextBtn) return;
     
-    let currentIndex = 0;
+    let currentPageIndex = 0;
     
     function getCardsPerPage() {
       if (window.innerWidth < 768) return 1;
@@ -1102,33 +1102,38 @@ function handleContact(e){e.preventDefault();alert('Thanks for your message! I w
     
     function updateSlider() {
       const cardsPerPage = getCardsPerPage();
-      const maxIndex = Math.max(0, cards.length - cardsPerPage);
+      const totalPages = Math.ceil(cards.length / cardsPerPage);
+      const maxPageIndex = Math.max(0, totalPages - 1);
       
-      if (currentIndex > maxIndex) {
-        currentIndex = maxIndex;
+      if (currentPageIndex > maxPageIndex) {
+        currentPageIndex = maxPageIndex;
       }
       
       const gap = getGap();
       const cardWidth = cards[0].offsetWidth + gap;
       
-      grid.style.transform = `translateX(-${currentIndex * cardWidth}px)`;
+      // Shift by a page width (number of cards per page * card size)
+      const translateAmount = currentPageIndex * cardsPerPage * cardWidth;
       
-      prevBtn.disabled = (currentIndex === 0);
-      nextBtn.disabled = (currentIndex === maxIndex);
+      grid.style.transform = `translateX(-${translateAmount}px)`;
+      
+      prevBtn.disabled = (currentPageIndex === 0);
+      nextBtn.disabled = (currentPageIndex === maxPageIndex);
     }
     
     prevBtn.addEventListener('click', () => {
-      if (currentIndex > 0) {
-        currentIndex--;
+      if (currentPageIndex > 0) {
+        currentPageIndex--;
         updateSlider();
       }
     });
     
     nextBtn.addEventListener('click', () => {
       const cardsPerPage = getCardsPerPage();
-      const maxIndex = cards.length - cardsPerPage;
-      if (currentIndex < maxIndex) {
-        currentIndex++;
+      const totalPages = Math.ceil(cards.length / cardsPerPage);
+      const maxPageIndex = totalPages - 1;
+      if (currentPageIndex < maxPageIndex) {
+        currentPageIndex++;
         updateSlider();
       }
     });

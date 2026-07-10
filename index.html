@@ -55,7 +55,7 @@ ul{list-style:none}
 .mobile-menu .mm-cta{color:#07130D;justify-content:center;margin-top:6px}
 
 /* HERO */
-.hero{position:relative;overflow:hidden;background:radial-gradient(1200px 700px at 78% 4%,rgba(0,212,126,.12),transparent 60%),linear-gradient(160deg,#0c141c 0%,#0a1017 55%,#080d13 100%)}
+.hero{position:relative;overflow:hidden;background:radial-gradient(1200px 700px at 78% 4%,rgba(0,212,126,.12),transparent 60%),linear-gradient(160deg,#0c141c 0%,#0a1017 55%,#080d13 100%);max-height:768px}
 .hero-bg{position:absolute;inset:0;z-index:0;pointer-events:none}
 #hero-net{position:absolute;inset:0;width:100%;height:100%;opacity:.55}
 .hero-keywords{position:absolute;inset:0;z-index:1;pointer-events:none}
@@ -68,7 +68,7 @@ ul{list-style:none}
 .kw6{bottom:20%;right:18%;font-size:14px;color:rgba(255,255,255,.11)}
 .kw7{bottom:8%;right:7%;font-size:15px;color:rgba(255,255,255,.12)}
 @keyframes kwFloat{0%,100%{transform:translateY(0);opacity:.5}50%{transform:translateY(-10px);opacity:.95}}
-.hero-shell{position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:150px 32px 96px;display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
+.hero-shell{position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:clamp(120px, 14vh, 150px) 32px clamp(60px, 8vh, 96px);display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
 .hero-copy{max-width:600px}
 .avail-badge{display:inline-flex;align-items:center;gap:9px;font-size:13px;font-weight:600;color:var(--text-2);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);padding:8px 16px;border-radius:999px}
 .avail-dot{width:9px;height:9px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(0,212,126,.6);animation:pulseDot 2s infinite}
@@ -86,6 +86,7 @@ ul{list-style:none}
 @media (max-width:900px){
   .nav-links{display:none}
   .burger{display:block}
+  .hero{max-height:none}
   .hero-shell{grid-template-columns:1fr;gap:40px;padding:130px 22px 72px}
   .hero-copy{max-width:none;order:1}
   .hero-visual{order:2}

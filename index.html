@@ -745,7 +745,7 @@ function handleContact(e){e.preventDefault();alert('Thanks for your message! I w
     "Big Data",
     "Statistics",
     "Clustering",
-    "Algorithms"
+    "Algorithm"
   ];
   
   const container = document.querySelector('.hero-keywords');
@@ -783,17 +783,22 @@ function handleContact(e){e.preventDefault();alert('Thanks for your message! I w
     
     container.appendChild(span);
     
+    // Fade in
     setTimeout(() => {
       span.classList.add('visible');
     }, 50);
     
+    // Spawn the next keyword in 2500ms (so it starts fading in before the current one fades out)
+    setTimeout(spawnKeyword, 2500);
+    
+    // Start fading out this keyword after 3000ms
     setTimeout(() => {
       span.classList.remove('visible');
+      // Remove from DOM after the fade transition completes (1500ms opacity transition)
       setTimeout(() => {
         span.remove();
-        setTimeout(spawnKeyword, 800);
       }, 1500);
-    }, 3500);
+    }, 3000);
   }
   
   spawnKeyword();

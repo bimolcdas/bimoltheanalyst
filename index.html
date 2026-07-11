@@ -55,7 +55,7 @@ ul{list-style:none}
 .mobile-menu .mm-cta{color:#07130D;justify-content:center;margin-top:6px}
 
 /* HERO */
-.hero{position:relative;overflow:hidden;background:radial-gradient(1200px 700px at 78% 4%,rgba(0,212,126,.12),transparent 60%),linear-gradient(160deg,#0c141c 0%,#0a1017 55%,#080d13 100%);max-height:768px;padding-top:72px;padding-bottom:44px}
+.hero{position:relative;overflow:hidden;background:radial-gradient(1200px 700px at 78% 4%,rgba(0,212,126,.12),transparent 60%),linear-gradient(160deg,#0c141c 0%,#0a1017 55%,#080d13 100%);max-height:768px;padding-top:72px;padding-bottom:29px}
 .hero-bg{position:absolute;inset:0;z-index:0;pointer-events:none}
 #hero-net{position:absolute;inset:0;width:100%;height:100%;opacity:.55}
 .hero-keywords{position:absolute;inset:0;z-index:1;pointer-events:none}
@@ -112,7 +112,7 @@ ul{list-style:none}
 }
 /* EXPERIENCE STRIP */
 .exp-strip {
-  margin-top: 4px;
+  margin-top: -11px;
   margin-bottom: 4px;
   text-align: center;
   background: var(--bg-section);
@@ -528,7 +528,7 @@ ul{list-style:none}
 .nav{height:64px}.nav-inner{height:64px}
 .nav-links,.nav-cta{display:none}
 .burger{display:block}
-.hero{padding:72px 0 64px}
+.hero{padding:72px 0 49px}
 .hero-grid{grid-template-columns:1fr;gap:32px}
 .hero h1{font-size:38px;line-height:46px;letter-spacing:-1.2px}
 .hero-desc{font-size:16px}
@@ -537,7 +537,7 @@ ul{list-style:none}
 .hero-card{margin:0 auto;height:300px}
 .desktop-label{display:none}
 .mobile-label{display:inline}
-.exp-strip{margin-top:4px;margin-bottom:4px;padding:15px 0}
+.exp-strip{margin-top:-11px;margin-bottom:4px;padding:15px 0}
 .exp-tag{height:34px;font-size:12px;padding:8px 14px}
 .about-grid{grid-template-columns:1fr;gap:24px}
 .grid-4,.grid-3,.grid-2,.grid-5{grid-template-columns:1fr;gap:18px}
@@ -896,7 +896,7 @@ function handleContact(e){e.preventDefault();alert('Thanks for your message! I w
     var r=canvas.parentElement.getBoundingClientRect();
     dpr=Math.min(window.devicePixelRatio||1,2);
     w=r.width;h=r.height;
-    if(h > 900){h = 900;}
+    if(h*dpr > 2000){h = 2000/dpr;}
     canvas.width=w*dpr;canvas.height=h*dpr;
     canvas.style.width=w+'px';canvas.style.height=h+'px';
     ctx.setTransform(dpr,0,0,dpr,0,0);

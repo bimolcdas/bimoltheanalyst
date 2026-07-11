@@ -13,8 +13,10 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
 :root{
 --bg-main:#111820;--bg-section:#151D26;--card:#1B2430;--card-soft:#202B36;
+--brand-green:#0DD86B;--accent-green:#33FA96;--slate:#334155;--slate-dark:#1E293B;--capsule-border:#4D4B4B;
 --border:#2A3442;--text:#F4F7FB;--text-2:#9AA7B5;--muted:#6F7D8C;
 --green:#00D47E;--green-h:#00B86B;--white:#FFFFFF;
 --shadow:0 20px 60px rgba(0,0,0,.18);
@@ -82,18 +84,81 @@ ul{list-style:none}
   }
 }
 .hero-shell{position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:clamp(120px, 14vh, 150px) 32px clamp(60px, 8vh, 96px);display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
-.hero-copy{max-width:600px}
-.avail-badge{display:inline-flex;align-items:center;gap:9px;font-size:13px;font-weight:600;color:var(--text-2);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);padding:8px 16px;border-radius:999px}
-.avail-dot{width:9px;height:9px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(0,212,126,.6);animation:pulseDot 2s infinite}
-@keyframes pulseDot{0%{box-shadow:0 0 0 0 rgba(0,212,126,.55)}70%{box-shadow:0 0 0 8px rgba(0,212,126,0)}100%{box-shadow:0 0 0 0 rgba(0,212,126,0)}}
-.eyebrow{margin:22px 0 14px;font-size:13px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--green)}
-.hero-title{font-size:clamp(32px,4.4vw,54px);line-height:1.08;font-weight:800;letter-spacing:-.02em;color:var(--text)}
-.hero-title .green{color:var(--green)}
-.desktop-br{display:block}
-@media(max-width:900px){.desktop-br{display:none}}
-.cert-badges{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 20px}
-.cert{font-size:12px;font-weight:700;letter-spacing:.05em;color:var(--text);background:rgba(0,212,126,.10);border:1px solid rgba(0,212,126,.30);padding:7px 14px;border-radius:8px}
-.hero-desc{font-size:16px;line-height:1.7;color:var(--text-2);max-width:540px}
+.hero-content {
+  max-width: 480px;
+}
+.hero-greeting {
+  font-family: "Poppins", -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--slate-dark);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.hero-greeting .accent {
+  color: var(--brand-green);
+}
+.hero-greeting .cursor {
+  display: inline-block;
+  width: 3px;
+  height: 1.1em;
+  background: var(--brand-green);
+  animation: blink 1s step-end infinite;
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0; }
+}
+.hero-name {
+  font-family: "Poppins", sans-serif;
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 62px;
+  color: var(--brand-green);
+  margin: 4px 0 0;
+}
+.hero-subtitle {
+  font-family: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 26px;
+  color: var(--slate);
+  margin: 8px 0 16px;
+}
+.hero-capsules {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.capsule {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid var(--capsule-border);
+  border-radius: 8px;
+  padding: 6px 16px;
+  font-family: "Poppins", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent-green);
+  line-height: 20px;
+  white-space: nowrap;
+}
+.hero-description {
+  font-family: Tahoma, sans-serif;
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 28px;
+  color: #FFFFFF;
+  margin: 24px 0 0;
+}
+.hero-description strong {
+  font-weight: 700;
+}
 .hero-cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:30px}
 .hero-visual{position:relative;display:flex;justify-content:center;align-items:center}
 .hero-glow{position:absolute;width:78%;height:78%;border-radius:50%;background:radial-gradient(circle,rgba(0,212,126,.42),rgba(0,212,126,.08) 55%,transparent 72%);filter:blur(46px);z-index:0}
@@ -103,7 +168,7 @@ ul{list-style:none}
   .burger{display:block}
   .hero{max-height:none}
   .hero-shell{grid-template-columns:1fr;gap:40px;padding:130px 22px 72px}
-  .hero-copy{max-width:none;order:1}
+  .hero-content{max-width:none;order:1}
   .hero-visual{order:2}
 }
 @media (max-width:560px){
@@ -532,8 +597,8 @@ ul{list-style:none}
 .burger{display:block}
 .hero{padding:72px 0 49px}
 .hero-grid{grid-template-columns:1fr;gap:32px}
-.hero h1{font-size:38px;line-height:46px;letter-spacing:-1.2px}
-.hero-desc{font-size:16px}
+.hero-name{font-size:36px;line-height:46px;letter-spacing:-1.2px}
+.hero-description{font-size:16px;line-height:26px}
 .hero-cta{flex-direction:column}
 .hero-cta .btn{width:100%}
 .hero-card{margin:0 auto;height:300px}
@@ -619,16 +684,32 @@ ul{list-style:none}
     <div class="hero-keywords"></div>
   </div>
   <div class="hero-shell">
-    <div class="hero-copy">
+    <div class="hero-content">
+      <!-- Greeting with two-tone + blinking cursor -->
+      <h1 class="hero-greeting">
+        Hello, <span class="accent">I'm</span><span class="cursor"></span>
+      </h1>
 
-      <p class="eyebrow">DATA ANALYTICS • BUSINESS INTELLIGENCE • AUTOMATION</p>
-      <h1 class="hero-title">I help businesses turn<br class="desktop-br"> <span class="green">messy data</span> into<br class="desktop-br"> clear decisions</h1>
-      <div class="cert-badges">
-        <span class="cert">CBAP</span>
-        <span class="cert">PMP</span>
-        <span class="cert">PL-300</span>
+      <!-- Main headline -->
+      <h2 class="hero-name">Bimol Chandra Das</h2>
+
+      <!-- Subtitle -->
+      <p class="hero-subtitle">Data Analytics &amp; Business Intelligence Expert</p>
+
+      <!-- Credential capsules -->
+      <div class="hero-capsules">
+        <span class="capsule">CBAP</span>
+        <span class="capsule">PMP</span>
+        <span class="capsule">PL-300</span>
       </div>
-      <p class="hero-desc">I build dashboards, reporting systems, and analytics solutions that help teams save time, improve visibility, and make better business decisions across the US, Bangladesh, and Nepal.</p>
+
+      <!-- Description -->
+      <p class="hero-description">
+    I build dashboards, reporting systems, and analytics solutions 
+    that help teams save time, improve visibility, and make better business decisions 
+    across the US, Bangladesh, and Nepal.
+      </p>
+
       <div class="hero-cta">
         <a href="#contact" class="btn btn-primary">Start a Project</a>
         <a href="#contact" class="btn btn-secondary">Download Resume</a>
